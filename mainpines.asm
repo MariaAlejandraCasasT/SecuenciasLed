@@ -1,0 +1,94 @@
+; PIC16F887 Configuration Bit Settings
+
+; Assembly source line config statements
+
+   
+#include "p16f887.inc"
+
+; CONFIG1
+; __config 0x28D5
+ __CONFIG _CONFIG1, _FOSC_INTRC_CLKOUT & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _BOREN_OFF & _IESO_OFF & _FCMEN_ON & _LVP_OFF
+; CONFIG2
+; __config 0x3FFF
+ __CONFIG _CONFIG2, _BOR4V_BOR40V & _WRT_OFF
+
+    
+    LIST p=16F887
+    
+N EQU 0xD0
+cont1 EQU 0x20 
+cont2 EQU 0x21 
+cont3 EQU 0x22 
+ 
+ 
+    ORG	0x00
+    GOTO INICIO
+    
+  LOOP7
+    MOVLW 0x86
+    MOVWF PORTD
+    CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x4C
+    MOVWF PORTD
+    CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x38
+    MOVWF PORTD
+    CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x30
+    MOVWF PORTD
+    CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x68
+    MOVWF PORTD
+     CALL RETARDO
+    CALL RETARDO
+    MOVLW 0xC4
+    MOVWF PORTD
+     CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x82
+    MOVWF PORTD
+     CALL RETARDO
+    CALL RETARDO
+    MOVLW 0x01
+    MOVWF PORTD
+    CALL RETARDO
+    CALL RETARDO
+    BTFSS PORTD,0
+    GOTO LOOP7
+    
+    
+    MOVLW 0x01
+    MOVWF PORTD
+    
+LOOP6
+    RLF PORTD
+    BSF PORTD, 0
+    CALL RETARDO
+    CALL RETARDO
+    BTFSS PORTD,7
+    GOTO LOOP6
+    
+    CALL RETARDO 
+    CALL RETARDO
+    GOTO LOOP1
+
+RETARDO
+    MOVLW N
+    MOVWF cont1
+    
+REP_1
+    MOVLW N
+    MOVWF cont2
+    
+REP_2
+    DECFSZ cont2,1
+    GOTO REP_2
+    DECFSZ cont1,1
+    GOTO REP_1
+    RETURN
+    
+    end
